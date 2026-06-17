@@ -79,7 +79,7 @@ import {
   Cell
 } from 'recharts';
 
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1jbIqeemboXWY7lUmfHfMGPb3m8W7KRuNPy4NEl-cu0c/export?format=csv";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1slcqgokap4QkFkeJMZ2GYV_mhBmthLLdSnmtU7n7-6g/export?format=csv";
 
 export const INFO_PRODUCTS = [
   { name: "Protocolo Força Natural", commissionRate: 0.5 },
@@ -570,7 +570,15 @@ export default function App() {
   const [activeSettingsTab, setActiveSettingsTab] = useState<'general' | 'partners'>('general');
   const [webhookUrl, setWebhookUrl] = useState(() => localStorage.getItem('crm_webhook_url') || "");
   const [sheetSyncUrl, setSheetSyncUrl] = useState(() => localStorage.getItem('crm_sheet_sync_url') || "");
-  const [sheetCsvUrl, setSheetCsvUrl] = useState(() => localStorage.getItem('crm_sheet_csv_url') || SHEET_CSV_URL);
+  const [sheetCsvUrl, setSheetCsvUrl] = useState(() => {
+    const saved = localStorage.getItem('crm_sheet_csv_url');
+    const oldUrl = "https://docs.google.com/spreadsheets/d/1jbIqeemboXWY7lUmfHfMGPb3m8W7KRuNPy4NEl-cu0c/export?format=csv";
+    if (saved === oldUrl) {
+      localStorage.setItem('crm_sheet_csv_url', SHEET_CSV_URL);
+      return SHEET_CSV_URL;
+    }
+    return saved || SHEET_CSV_URL;
+  });
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [view, setView] = useState<'crm' | 'dashboard' | 'followup'>('crm');
   // Dashboard Subtabs & Date Filters
