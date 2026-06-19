@@ -660,7 +660,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-modern-secondary">Comissão</p>
                     <h4 className="text-xl font-black text-emerald-600 mt-1 font-mono">
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(dashTotalCommission)}
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(dashTotalCommission)}
                     </h4>
                   </div>
                   <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
@@ -682,7 +682,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-modern-secondary">Faturamento Total</p>
                     <h4 className="text-xl font-black text-slate-800 mt-1 font-mono">
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(
                         filteredSalesForDash.reduce((sum, s) => sum + s.value, 0)
                       )}
                     </h4>
@@ -699,7 +699,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-modern-secondary">Comissão (Mês) - PIX</p>
                     <h4 className="text-xl font-black text-emerald-600 mt-1 font-mono">
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(commissionMonthPix)}
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(commissionMonthPix)}
                     </h4>
                   </div>
                   <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
@@ -711,7 +711,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-modern-secondary">Comissão (Mês) - Payt</p>
                     <h4 className="text-xl font-black text-blue-600 mt-1 font-mono">
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(commissionMonthPayt)}
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(commissionMonthPayt)}
                     </h4>
                   </div>
                   <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
@@ -723,7 +723,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-rose-700">Comissão Total (Mês)</p>
                     <h4 className="text-xl font-black text-rose-600 mt-1 font-mono">
-                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(commissionMonthTotal)}
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(commissionMonthTotal)}
                     </h4>
                   </div>
                   <div className="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center text-rose-600">
@@ -748,9 +748,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                             </linearGradient>
                           </defs>
                           <XAxis dataKey="monthLabel" tick={{ fontSize: 9 }} tickLine={false} />
-                          <YAxis tickFormatter={(val) => `R$${val}`} tick={{ fontSize: 9 }} tickLine={false} />
+                          <YAxis tickFormatter={(val) => `€${val}`} tick={{ fontSize: 9 }} tickLine={false} />
                           <Tooltip 
-                            formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value), 'Comissão']}
+                            formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(value), 'Comissão']}
                             labelStyle={{ fontSize: '10px', fontWeight: 'bold' }}
                             contentStyle={{ fontSize: '11px', borderRadius: '12px' }}
                           />
@@ -794,9 +794,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={dashDailySalesAndCommission}>
                           <XAxis dataKey="formattedDate" tick={{ fontSize: 9 }} tickLine={false} />
-                          <YAxis tickFormatter={(val) => `R$${val}`} tick={{ fontSize: 9 }} tickLine={false} />
+                          <YAxis tickFormatter={(val) => `€${val}`} tick={{ fontSize: 9 }} tickLine={false} />
                           <Tooltip 
-                            formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value), 'Comissão']}
+                            formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(value), 'Comissão']}
                             labelStyle={{ fontSize: '10px', fontWeight: 'bold' }}
                             contentStyle={{ fontSize: '11px', borderRadius: '12px' }}
                           />
@@ -820,7 +820,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         <BarChart data={dashWhatsappSales} layout="vertical" margin={{ left: 10, right: 10, top: 5, bottom: 5 }}>
                           <XAxis type="number" tick={{ fontSize: 9 }} tickLine={false} />
                           <YAxis dataKey="name" type="category" tick={{ fontSize: 9 }} width={110} tickLine={false} />
-                          <Tooltip formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value), 'Faturamento']} />
+                          <Tooltip formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(value), 'Faturamento']} />
                           <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                             {dashWhatsappSales.map((entry: any, index: number) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
@@ -1012,7 +1012,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         <BarChart data={dashWhatsappSales} layout="vertical" margin={{ left: 10, right: 10 }}>
                           <XAxis type="number" tick={{ fontSize: 9 }} tickLine={false} />
                           <YAxis dataKey="name" type="category" tick={{ fontSize: 9 }} width={100} tickLine={false} />
-                          <Tooltip formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value), 'Faturamento']} />
+                          <Tooltip formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(value), 'Faturamento']} />
                           <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                             {dashWhatsappSales.map((entry: any, index: number) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
@@ -1114,7 +1114,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         <BarChart data={dashManualSalesByProduct} layout="vertical" margin={{ left: 10, right: 10 }}>
                           <XAxis type="number" tick={{ fontSize: 9 }} tickLine={false} />
                           <YAxis dataKey="name" type="category" tick={{ fontSize: 9 }} width={120} tickLine={false} />
-                          <Tooltip formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value), 'Faturamento']} />
+                          <Tooltip formatter={(value: any) => [new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(value), 'Faturamento']} />
                           <Bar dataKey="value" fill="#10b981" radius={[0, 4, 4, 0]} />
                         </BarChart>
                       </ResponsiveContainer>
@@ -1247,7 +1247,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                               <span className="truncate">{sale.productName}</span>
                             </td>
                             <td className="py-3 px-4 text-xs text-modern-text font-bold border-b border-slate-100/65 font-mono">
-                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(sale.value)}
+                              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(sale.value)}
                             </td>
                             <td className="py-3 px-4 text-xs text-modern-text font-semibold border-b border-slate-100/65 truncate max-w-[120px]">
                               {client?.nome || 'N/A'}
@@ -1256,7 +1256,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                             {!dashShowUtms ? (
                               <>
                                 <td className="py-3 px-4 text-xs font-black text-emerald-600 text-right border-b border-slate-100/65 font-mono font-bold">
-                                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(sale.commission)}
+                                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(sale.commission)}
                                 </td>
                                 <td className="py-3 px-4 border-b border-slate-100/65 text-right">
                                   <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

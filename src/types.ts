@@ -14,6 +14,7 @@ export interface Lead {
   paymentMethod?: string;
   rowNumber?: number;
   checkoutUrl?: string; // Column V
+  pais?: string; // Column X
   // UTM Fields
   src?: string;
   sck?: string;
@@ -93,6 +94,7 @@ export interface Client {
   manualSales?: ManualSale[];
   trackingCode?: string;
   assignedWhatsappId?: string;
+  pais?: string;
 }
 
 export const FUNNEL_STEPS = [

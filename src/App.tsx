@@ -81,6 +81,176 @@ import {
 
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1slcqgokap4QkFkeJMZ2GYV_mhBmthLLdSnmtU7n7-6g/export?format=csv";
 
+export interface CountryConfig {
+  name: string;
+  iso2: string;
+  iso3: string;
+  ddi: string;
+  pattern: string;
+}
+
+export const COUNTRY_FORMATS: CountryConfig[] = [
+  { name: "Brasil", iso2: "BR", iso3: "BRA", ddi: "55", pattern: "(XX) XXXXX-XXXX" },
+  { name: "Argentina", iso2: "AR", iso3: "ARG", ddi: "54", pattern: "9 (XX) XXX-XXXX" },
+  { name: "Chile", iso2: "CL", iso3: "CHL", ddi: "56", pattern: "9 XXXX XXXX" },
+  { name: "Colômbia", iso2: "CO", iso3: "COL", ddi: "57", pattern: "XXX XXX XXXX" },
+  { name: "Peru", iso2: "PE", iso3: "PER", ddi: "51", pattern: "XXX XXX XXX" },
+  { name: "Uruguai", iso2: "UY", iso3: "URY", ddi: "598", pattern: "9X XXX XXX" },
+  { name: "Paraguai", iso2: "PY", iso3: "PRY", ddi: "595", pattern: "9XX XXX XXX" },
+  { name: "Equador", iso2: "EC", iso3: "ECU", ddi: "593", pattern: "9 XXX XXXX" },
+  { name: "Bolívia", iso2: "BO", iso3: "BOL", ddi: "591", pattern: "X XXX XXXX" },
+  { name: "Venezuela", iso2: "VE", iso3: "VEN", ddi: "58", pattern: "4XX XXX XXXX" },
+  { name: "Guiana", iso2: "GY", iso3: "GUY", ddi: "592", pattern: "XXX XXXX" },
+  { name: "Suriname", iso2: "SR", iso3: "SUR", ddi: "597", pattern: "XXX-XXXX" },
+  { name: "Guiana Francesa", iso2: "GF", iso3: "GUF", ddi: "594", pattern: "XXX XX XX XX" },
+  { name: "Estados Unidos", iso2: "US", iso3: "USA", ddi: "1", pattern: "(XXX) XXX-XXXX" },
+  { name: "Canadá", iso2: "CA", iso3: "CAN", ddi: "1", pattern: "(XXX) XXX-XXXX" },
+  { name: "México", iso2: "MX", iso3: "MEX", ddi: "52", pattern: "XX XXXX XXXX" },
+  { name: "Costa Rica", iso2: "CR", iso3: "CRI", ddi: "506", pattern: "XXXX-XXXX" },
+  { name: "Panamá", iso2: "PA", iso3: "PAN", ddi: "507", pattern: "XXXX-XXXX" },
+  { name: "Guatemala", iso2: "GT", iso3: "GTM", ddi: "502", pattern: "XXXX-XXXX" },
+  { name: "Honduras", iso2: "HN", iso3: "HND", ddi: "504", pattern: "XXXX-XXXX" },
+  { name: "El Salvador", iso2: "SV", iso3: "SLV", ddi: "503", pattern: "XXXX-XXXX" },
+  { name: "Nicarágua", iso2: "NI", iso3: "NIC", ddi: "505", pattern: "XXXX-XXXX" },
+  { name: "Cuba", iso2: "CU", iso3: "CUB", ddi: "53", pattern: "X XXX XXXX" },
+  { name: "República Dominicana", iso2: "DO", iso3: "DOM", ddi: "1", pattern: "XXX-XXX-XXXX" },
+  { name: "Porto Rico", iso2: "PR", iso3: "PRI", ddi: "1", pattern: "XXX-XXX-XXXX" },
+  { name: "Jamaica", iso2: "JM", iso3: "JAM", ddi: "1", pattern: "XXX-XXX-XXXX" },
+  { name: "Haiti", iso2: "HT", iso3: "HTI", ddi: "509", pattern: "XX XX XX XX" },
+  { name: "Portugal", iso2: "PT", iso3: "PRT", ddi: "351", pattern: "9XX XXX XXX" },
+  { name: "Espanha", iso2: "ES", iso3: "ESP", ddi: "34", pattern: "XXX XXX XXX" },
+  { name: "França", iso2: "FR", iso3: "FRA", ddi: "33", pattern: "X XX XX XX XX" },
+  { name: "Reino Unido", iso2: "GB", iso3: "GBR", ddi: "44", pattern: "7XXX XXXXXX" },
+  { name: "Alemanha", iso2: "DE", iso3: "DEU", ddi: "49", pattern: "XXX XXXXXXX" },
+  { name: "Itália", iso2: "IT", iso3: "ITA", ddi: "39", pattern: "3XX XXX XXXX" },
+  { name: "Suíça", iso2: "CH", iso3: "CHE", ddi: "41", pattern: "XX XXX XX XX" },
+  { name: "Bélgica", iso2: "BE", iso3: "BEL", ddi: "32", pattern: "4XX XX XX XX" },
+  { name: "Países Baixos", iso2: "NL", iso3: "NLD", ddi: "31", pattern: "6 XXXX XXXX" },
+  { name: "Irlanda", iso2: "IE", iso3: "IRL", ddi: "353", pattern: "8X XXX XXXX" },
+  { name: "Áustria", iso2: "AT", iso3: "AUT", ddi: "43", pattern: "6XX XXXXXXX" },
+  { name: "Suécia", iso2: "SE", iso3: "SWE", ddi: "46", pattern: "XX XXX XX XX" },
+  { name: "Noruega", iso2: "NO", iso3: "NOR", ddi: "47", pattern: "XXX XX XXX" },
+  { name: "Dinamarca", iso2: "DK", iso3: "DNK", ddi: "45", pattern: "XX XX XX XX" },
+  { name: "Finlândia", iso2: "FI", iso3: "FIN", ddi: "358", pattern: "XX XXX XXXX" },
+  { name: "Polónia", iso2: "PL", iso3: "POL", ddi: "48", pattern: "XXX XXX XXX" },
+  { name: "Rússia", iso2: "RU", iso3: "RUS", ddi: "7", pattern: "9XX XXX-XX-XX" },
+  { name: "Ucrânia", iso2: "UA", iso3: "UKR", ddi: "380", pattern: "XX XXX XX XX" },
+  { name: "Roménia", iso2: "RO", iso3: "ROU", ddi: "40", pattern: "7XX XXX XXX" },
+  { name: "Grécia", iso2: "GR", iso3: "GRC", ddi: "30", pattern: "69XX XXX XXX" },
+  { name: "República Checa", iso2: "CZ", iso3: "CZE", ddi: "420", pattern: "XXX XXX XXX" },
+  { name: "Hungria", iso2: "HU", iso3: "HUN", ddi: "36", pattern: "XX XXX XXXX" },
+  { name: "Croácia", iso2: "HR", iso3: "HRV", ddi: "385", pattern: "9X XXX XXXX" },
+  { name: "China", iso2: "CN", iso3: "CHN", ddi: "86", pattern: "1XX XXXX XXXX" },
+  { name: "Japão", iso2: "JP", iso3: "JPN", ddi: "81", pattern: "XX XXXX XXXX" },
+  { name: "Índia", iso2: "IN", iso3: "IND", ddi: "91", pattern: "XXXXX XXXXX" },
+  { name: "Coreia do Sul", iso2: "KR", iso3: "KOR", ddi: "82", pattern: "10-XXXX-XXXX" },
+  { name: "Indonésia", iso2: "ID", iso3: "IDN", ddi: "62", pattern: "8XX XXXX XXXX" },
+  { name: "Filipinas", iso2: "PH", iso3: "PHL", ddi: "63", pattern: "9XX XXX XXXX" },
+  { name: "Vietname", iso2: "VN", iso3: "VNM", ddi: "84", pattern: "3XX XXX XXX" },
+  { name: "Tailândia", iso2: "TH", iso3: "THA", ddi: "66", pattern: "XX XXX XXXX" },
+  { name: "Malásia", iso2: "MY", iso3: "MYS", ddi: "60", pattern: "1X-XXX XXXX" },
+  { name: "Singapura", iso2: "SG", iso3: "SGP", ddi: "65", pattern: "XXXX XXXX" },
+  { name: "Hong Kong", iso2: "HK", iso3: "HKG", ddi: "852", pattern: "XXXX XXXX" },
+  { name: "Taiwan", iso2: "TW", iso3: "TWN", ddi: "886", pattern: "9XX XXX XXX" },
+  { name: "Paquistão", iso2: "PK", iso3: "PAK", ddi: "92", pattern: "3XX XXXXXXX" },
+  { name: "Bangladesh", iso2: "BD", iso3: "BGD", ddi: "880", pattern: "1XXX XXXXXX" },
+  { name: "Emirados Árabes Unidos", iso2: "AE", iso3: "ARE", ddi: "971", pattern: "5X XXX XXXX" },
+  { name: "Arábia Saudita", iso2: "SA", iso3: "SAU", ddi: "966", pattern: "5X XXX XXXX" },
+  { name: "Israel", iso2: "IL", iso3: "ISR", ddi: "972", pattern: "5X XXX XXXX" },
+  { name: "Turquia", iso2: "TR", iso3: "TUR", ddi: "90", pattern: "5XX XXX XX XX" },
+  { name: "Irão", iso2: "IR", iso3: "IRN", ddi: "98", pattern: "9XX XXX XXXX" },
+  { name: "Iraque", iso2: "IQ", iso3: "IRQ", ddi: "964", pattern: "7XX XXX XXXX" },
+  { name: "Qatar", iso2: "QA", iso3: "QAT", ddi: "974", pattern: "XXXX XXXX" },
+  { name: "Kuwait", iso2: "KW", iso3: "KWT", ddi: "965", pattern: "XXXX XXXX" },
+  { name: "Austrália", iso2: "AU", iso3: "AUS", ddi: "61", pattern: "4XX XXX XXX" },
+  { name: "Nova Zelândia", iso2: "NZ", iso3: "NZL", ddi: "64", pattern: "2X XXX XXXX" },
+  { name: "Fiji", iso2: "FJ", iso3: "FJI", ddi: "679", pattern: "XXX XXXX" },
+  { name: "Papua Nova Guiné", iso2: "PG", iso3: "PNG", ddi: "675", pattern: "7XX XXXXX" },
+  { name: "África do Sul", iso2: "ZA", iso3: "ZAF", ddi: "27", pattern: "XX XXX XXXX" },
+  { name: "Nigéria", iso2: "NG", iso3: "NGA", ddi: "234", pattern: "80X XXX XXXX" },
+  { name: "Egito", iso2: "EG", iso3: "EGY", ddi: "20", pattern: "1XX XXX XXXX" },
+  { name: "Marrocos", iso2: "MA", iso3: "MAR", ddi: "212", pattern: "6XX XX XX XX" },
+  { name: "Argélia", iso2: "DZ", iso3: "DZA", ddi: "213", pattern: "5XX XX XX XX" },
+  { name: "Quénia", iso2: "KE", iso3: "KEN", ddi: "254", pattern: "7XX XXX XXX" },
+  { name: "Angola", iso2: "AO", iso3: "AGO", ddi: "244", pattern: "9XX XXX XXX" },
+  { name: "Moçambique", iso2: "MZ", iso3: "MOZ", ddi: "258", pattern: "8X XXX XXXX" },
+  { name: "Cabo Verde", iso2: "CV", iso3: "CPV", ddi: "238", pattern: "9XX XX XX" },
+  { name: "Guiné-Bissau", iso2: "GW", iso3: "GNB", ddi: "245", pattern: "9XX XXX XXX" },
+  { name: "São Tomé e Príncipe", iso2: "ST", iso3: "STP", ddi: "239", pattern: "9XX XXXX" },
+  { name: "Gana", iso2: "GH", iso3: "GHA", ddi: "233", pattern: "XX XXX XXXX" },
+];
+
+export const formatPhoneWithRules = (phone: string, countryKeyword?: string): string => {
+  if (!phone) return "";
+  
+  // Strip everything except digits
+  const cleanDigits = phone.replace(/\D/g, '');
+  if (!cleanDigits) return "";
+  
+  let matchedConfig: CountryConfig | undefined;
+  
+  // 1. Try to match country explicitly by keyword
+  if (countryKeyword) {
+    const kw = countryKeyword.toLowerCase().trim();
+    matchedConfig = COUNTRY_FORMATS.find(c => 
+      c.name.toLowerCase() === kw || 
+      c.iso2.toLowerCase() === kw || 
+      c.iso3.toLowerCase() === kw || 
+      c.ddi === kw
+    );
+  }
+  
+  // 2. If not matched, auto-detect country by DDI from digits
+  if (!matchedConfig) {
+    // Sort configurations by ddi length descending to match longer prefixes first
+    const sortedConfigs = [...COUNTRY_FORMATS].sort((a, b) => b.ddi.length - a.ddi.length);
+    matchedConfig = sortedConfigs.find(c => cleanDigits.startsWith(c.ddi));
+  }
+  
+  if (!matchedConfig) {
+    if (cleanDigits.length > 5) {
+      return `+${cleanDigits}`;
+    }
+    return phone;
+  }
+  
+  // Determine local part
+  let localPart = "";
+  if (cleanDigits.startsWith(matchedConfig.ddi)) {
+    localPart = cleanDigits.slice(matchedConfig.ddi.length);
+  } else {
+    localPart = cleanDigits;
+  }
+  
+  // Fill the pattern with local part digits
+  let result = "";
+  let digitIndex = 0;
+  const pattern = matchedConfig.pattern;
+  
+  for (let i = 0; i < pattern.length; i++) {
+    const char = pattern[i];
+    if (char === 'X') {
+      if (digitIndex < localPart.length) {
+        result += localPart[digitIndex++];
+      } else {
+        break;
+      }
+    } else {
+      result += char;
+    }
+  }
+  
+  // If there are leftover digits, append them
+  if (digitIndex < localPart.length) {
+    result += localPart.slice(digitIndex);
+  }
+  
+  // Clean trailing punctuation or spaces from incomplete matches
+  result = result.trim().replace(/[-\s(]+$/, '');
+  
+  return `+${matchedConfig.ddi} ${result}`;
+};
+
 export const INFO_PRODUCTS = [
   { name: "Protocolo Força Natural", commissionRate: 0.5 },
   { name: "Protocolo da Verdade", commissionRate: 0.5 },
@@ -178,28 +348,7 @@ const PAYMENT_METHODS: Record<string, string> = {
 const cleanPhone = (phone: string): string => {
   if (!phone) return "";
   // Remove all non-digits
-  let cleaned = phone.replace(/\D/g, '');
-  
-  // Handle double DDI (5555...)
-  // If it starts with 5555 and is long, it's likely a double DDI
-  if (cleaned.startsWith('5555') && cleaned.length >= 14) {
-    cleaned = cleaned.substring(2);
-  }
-  
-  // Ensure it starts with 55 if it's a Brazilian number (10 or 11 digits without DDI)
-  if (cleaned.length === 10 || cleaned.length === 11) {
-    if (!cleaned.startsWith('55')) {
-      cleaned = '55' + cleaned;
-    } else {
-      // If it starts with 55 and has 11 digits, it could be DDD 55 + 9 digits (total 11)
-      // or it could be DDI 55 + DDD + 7 digits (total 11 - invalid).
-      // In Brazil, if it's 11 digits and starts with 55, it's almost always DDD 55 + 9 digits.
-      // So we add 55 DDI.
-      cleaned = '55' + cleaned;
-    }
-  }
-  
-  return cleaned;
+  return phone.replace(/\D/g, '');
 };
 
 const isValidPhone = (phone: string): boolean => {
@@ -1690,7 +1839,7 @@ export default function App() {
 
     try {
       await setDoc(doc(db, `users/${effectiveWorkspaceId}/sales`, saleId), newSale);
-      addInteractionLog(newSale.clientKey, 'manual_sale', `Venda manual registrada: ${newSale.productName} (R$ ${newSale.value})`);
+      addInteractionLog(newSale.clientKey, 'manual_sale', `Venda manual registrada: ${newSale.productName} (€ ${newSale.value})`);
     } catch (error) {
       handleFirestoreError(error, OperationType.WRITE, `users/${effectiveWorkspaceId}/sales/${saleId}`);
     }
@@ -1796,13 +1945,13 @@ export default function App() {
       setManualSales(updatedSales);
       localStorage.setItem('crm_manual_sales', JSON.stringify(updatedSales));
       toggleTag(clientKey, 'vendido');
-      addInteractionLog(clientKey, 'manual_sale', `Venda Payt registrada como Vendido: ${newSale.productName} (R$ ${newSale.value})`);
+      addInteractionLog(clientKey, 'manual_sale', `Venda Payt registrada como Vendido: ${newSale.productName} (€ ${newSale.value})`);
       return;
     }
 
     try {
       await setDoc(doc(db, `users/${effectiveWorkspaceId}/sales`, saleId), newSale);
-      addInteractionLog(clientKey, 'manual_sale', `Venda Payt registrada como Vendido: ${newSale.productName} (R$ ${newSale.value})`);
+      addInteractionLog(clientKey, 'manual_sale', `Venda Payt registrada como Vendido: ${newSale.productName} (€ ${newSale.value})`);
       toggleTag(clientKey, 'vendido');
     } catch (error) {
       handleFirestoreError(error, OperationType.WRITE, `users/${effectiveWorkspaceId}/sales/${saleId}`);
@@ -1909,7 +2058,7 @@ export default function App() {
             }
 
             const rawValor = row['valor'] || row['vlr'] || '0';
-            let cleanValor = rawValor.toString().replace(/[R$\s]/g, '');
+            let cleanValor = rawValor.toString().replace(/[R$€\s]/g, '');
             
             if (cleanValor.includes(',') && cleanValor.includes('.')) {
               if (cleanValor.indexOf('.') < cleanValor.indexOf(',')) {
@@ -1928,7 +2077,17 @@ export default function App() {
             let telefoneRaw = (row['telefone'] || row['whatsapp'] || row['celular'] || row['phone'] || '').toString().trim();
             let emailRaw = (row['email'] || row['e-mail'] || row['mail'] || '').toString().trim();
 
+            let rowPais = '';
+            for (const key of Object.keys(row)) {
+              const lowerKey = key.toLowerCase().trim();
+              if (lowerKey === 'pais' || lowerKey === 'país' || lowerKey === 'country' || lowerKey === 'x') {
+                rowPais = (row[key] || '').toString().trim();
+                if (rowPais) break;
+              }
+            }
+
             const cleanedTelefone = cleanPhone(telefoneRaw);
+            const formattedTelefone = formatPhoneWithRules(cleanedTelefone, rowPais);
             const productFromE = eHeader ? (row[eHeader] || '').toString().trim() : '';
 
             if (rawStatus.startsWith('approved') || rawStatus === 'aprovado' || rawStatus.startsWith('completed') || rawStatus === 'completed' || rawStatus === 'paid' || rawStatus === 'pago' || rawStatus === 'succeeded' || rawStatus === 'success' || rawStatus === 'concluido' || rawStatus === 'completo') {
@@ -1951,7 +2110,7 @@ export default function App() {
             const checkoutUrlFromV = vHeader ? (row[vHeader] || '').toString().trim() : '';
 
             const rowEmail = emailRaw.toLowerCase().trim();
-            const rowPhone = cleanedTelefone;
+            const rowPhone = formattedTelefone || cleanedTelefone;
             const rowCodPay = (row['cod pay'] || '').toString().trim();
             const rowProd = productFromE || (row['produto'] || '').trim();
             const rowVal = isNaN(leadValue) ? '0' : leadValue.toString();
@@ -1961,13 +2120,14 @@ export default function App() {
             return {
               id: finalId,
               nome: (row['nome'] || 'Sem Nome').trim(),
-              telefone: cleanedTelefone,
+              telefone: formattedTelefone || cleanedTelefone,
               email: emailRaw,
               produto: productFromE || (row['produto'] || '').trim(),
-              valor: isNaN(leadValue) ? 'R$ 0,00' : `R$ ${leadValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+              valor: isNaN(leadValue) ? '€ 0,00' : `€ ${leadValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
               status: normalizedStatus,
               codPay: (row['cod pay'] || '').trim(),
               checkoutUrl: checkoutUrlFromV || (row['checkout_link'] || row['checkout'] || '').trim(),
+              pais: rowPais || undefined,
               data: dateStr,
               hora: timeStr,
               timestamp,
@@ -3082,19 +3242,19 @@ export default function App() {
               <div className="text-right">
                 <p className="text-[9px] font-bold uppercase tracking-wider text-modern-secondary">Minha Comissão</p>
                 <p className="text-sm font-bold text-emerald-600">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.totalCommission)}
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(stats.totalCommission)}
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-[9px] font-bold uppercase tracking-wider text-modern-secondary">Vendas Manuais</p>
                 <p className="text-sm font-bold text-modern-text">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.manualRevenue)}
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(stats.manualRevenue)}
                 </p>
               </div>
               <div className="text-right">
                 <p className="text-[9px] font-bold uppercase tracking-wider text-modern-secondary">Total Planilha</p>
                 <p className="text-sm font-bold text-modern-text">
-                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.totalRevenue)}
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(stats.totalRevenue)}
                 </p>
               </div>
             </div>
@@ -4505,10 +4665,10 @@ export default function App() {
                             <div className="flex items-center gap-2">
                               <div className="text-right">
                                 <p className="text-sm font-extrabold text-emerald-600">
-                                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(sale.value)}
+                                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(sale.value)}
                                 </p>
                                 <p className="text-[9px] font-bold text-modern-secondary uppercase">
-                                  {format(new Date(sale.timestamp), 'HH:mm')} • {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(sale.commission)}
+                                  {format(new Date(sale.timestamp), 'HH:mm')} • {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(sale.commission)}
                                 </p>
                               </div>
                               <div className="flex flex-col opacity-0 group-hover/sale:opacity-100 transition-all">
@@ -5067,7 +5227,7 @@ export default function App() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-modern-secondary block">Valor da Venda (R$)</label>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-modern-secondary block">Valor da Venda (€)</label>
                   <input 
                     type="text" 
                     value={saleForm.value}
@@ -5103,7 +5263,7 @@ export default function App() {
                     <div className="flex justify-between items-center">
                       <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">Sua Comissão Estimada:</p>
                       <p className="text-lg font-extrabold text-emerald-600">
-                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'EUR' }).format(
                           (() => {
                             const valNum = parseFloat(saleForm.value.replace(',', '.')) || 0;
                             return getManualSaleCommission(saleForm.productName, valNum, saleForm.saleType || 'pix');
