@@ -644,6 +644,12 @@ export default function App() {
       return 'lixo';
     }
 
+    // 4. Auto-detected 'Lixo' (no phone number at all)
+    const phoneDigits = (client.telefone || '').replace(/\D/g, '');
+    if (!phoneDigits) {
+      return 'lixo';
+    }
+
     return null;
   };
   
