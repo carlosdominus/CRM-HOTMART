@@ -1925,11 +1925,11 @@ export default function App() {
             const cleanedTelefone = cleanPhone(telefoneRaw);
             const productFromE = eHeader ? (row[eHeader] || '').toString().trim() : '';
 
-            if (rawStatus.startsWith('approved') || rawStatus === 'aprovado' || rawStatus === 'paid' || rawStatus === 'pago' || rawStatus === 'succeeded' || rawStatus === 'success' || rawStatus === 'concluido' || rawStatus === 'completo') {
+            if (rawStatus.startsWith('approved') || rawStatus === 'aprovado' || rawStatus.startsWith('completed') || rawStatus === 'completed' || rawStatus === 'paid' || rawStatus === 'pago' || rawStatus === 'succeeded' || rawStatus === 'success' || rawStatus === 'concluido' || rawStatus === 'completo') {
               normalizedStatus = 'Aprovado';
             } else if (rawStatus.startsWith('pending') || rawStatus === 'pendente' || rawStatus === 'aguardando' || rawStatus === 'aguardando pagamento' || rawStatus === 'waiting_payment') {
               normalizedStatus = 'Pendente';
-            } else if (rawStatus === 'refused' || rawStatus === 'cartao recusado' || rawStatus === 'cartão recusado' || rawStatus === 'rejected' || rawStatus === 'cancelado' || rawStatus === 'recusado') {
+            } else if (rawStatus === 'canceled' || rawStatus === 'cancelled' || rawStatus.startsWith('canceled') || rawStatus.startsWith('cancelled') || rawStatus === 'refused' || rawStatus === 'cartao recusado' || rawStatus === 'cartão recusado' || rawStatus === 'rejected' || rawStatus === 'cancelado' || rawStatus === 'recusado') {
               normalizedStatus = 'Recusado';
             } else if (rawStatus === 'reembolsado' || rawStatus === 'devolvido') {
               normalizedStatus = 'Reembolsado';
