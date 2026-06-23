@@ -4554,7 +4554,49 @@ export default function App() {
                       </div>
                       <div className="flex flex-wrap gap-3 text-xs font-bold text-modern-secondary mb-6">
                         <p className="flex items-center gap-2 bg-slate-50/50 px-3 py-1.5 rounded-xl border border-modern-border/60"><AtSign size={14} /> {currentSelectedClient.email}</p>
-                        <p className="flex items-center gap-2 bg-slate-50/50 px-3 py-1.5 rounded-xl border border-modern-border/60"><Phone size={14} /> {currentSelectedClient.telefone}</p>
+                        {currentSelectedClient.telefone ? (
+                          <a 
+                            href={`https://wa.me/${currentSelectedClient.telefone.replace(/\D/g, '')}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-3 py-1.5 rounded-xl border border-emerald-200 transition-colors cursor-pointer"
+                            title="Clique para abrir conversa direta no WhatsApp"
+                          >
+                            <Phone size={14} className="text-emerald-600 animate-pulse" /> {currentSelectedClient.telefone}
+                          </a>
+                        ) : (
+                          <p className="flex items-center gap-2 bg-slate-50/50 px-3 py-1.5 rounded-xl border border-modern-border/60"><Phone size={14} /> Sem Telefone</p>
+                        )}
+                      </div>
+
+                      {/* Interactive Tags / CRM Markers inside Details Panel */}
+                      <div className="bg-slate-50 border border-modern-border/60 p-5 rounded-2xl mb-6 shadow-sm">
+                        <p className="text-[10px] font-black uppercase text-modern-secondary tracking-widest mb-3">Ações / Marcadores do Lead</p>
+                        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-5 gap-2">
+                          {[
+                            { id: 'reloginho', label: 'Pendente', icon: Clock, activeClass: 'bg-amber-100 border-amber-300 text-amber-700 hover:bg-amber-50', inactiveClass: 'bg-white border-slate-200 text-slate-500 hover:bg-amber-50/40' },
+                            { id: 'contato_sucesso', label: 'Sucesso', icon: UserCheck, activeClass: 'bg-emerald-100 border-emerald-300 text-emerald-700 hover:bg-emerald-50', inactiveClass: 'bg-white border-slate-200 text-slate-500 hover:bg-emerald-50/40' },
+                            { id: 'contato_falha', label: 'C. Falha', icon: UserX, activeClass: 'bg-purple-100 border-purple-300 text-purple-700 hover:bg-purple-50', inactiveClass: 'bg-white border-slate-200 text-slate-500 hover:bg-purple-50/40' },
+                            { id: 'vendido', label: 'Vendido', icon: CheckCircle2, activeClass: 'bg-emerald-600 border-emerald-700 text-white hover:bg-emerald-700', inactiveClass: 'bg-white border-slate-200 text-slate-500 hover:bg-slate-50' },
+                            { id: 'lixo', label: 'Lixo', icon: Trash2, activeClass: 'bg-rose-100 border-rose-300 text-rose-700 hover:bg-rose-50', inactiveClass: 'bg-white border-slate-200 text-slate-500 hover:bg-rose-50/40' }
+                          ].map((tItem) => {
+                            const IconComponent = tItem.icon;
+                            const isCurrent = getClientTag(currentSelectedClient) === tItem.id;
+                            return (
+                              <button
+                                key={tItem.id}
+                                onClick={() => toggleTag(currentSelectedClient.key, tItem.id as ClientTag)}
+                                className={cn(
+                                  "flex flex-col items-center justify-center p-2.5 border rounded-xl text-[10px] font-bold transition-all gap-1.5 focus:outline-none cursor-pointer",
+                                  isCurrent ? tItem.activeClass : tItem.inactiveClass
+                                )}
+                              >
+                                <IconComponent size={14} />
+                                <span>{tItem.label}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                     </>
                   )}
