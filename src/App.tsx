@@ -4092,7 +4092,7 @@ export default function App() {
                           <button
                             onClick={() => setProductFilter([])}
                             className={cn(
-                              "text-left px-2.5 py-1.5 rounded-md text-[11px] font-bold transition-colors border w-full truncate",
+                              "text-left px-2.5 py-1.5 rounded-md text-[11px] font-bold transition-colors border w-full truncate shrink-0",
                               productFilter.length === 0
                                 ? "bg-modern-primary/10 border-modern-primary/20 text-modern-primary font-extrabold"
                                 : "bg-white border-modern-border text-modern-text hover:bg-slate-50"
@@ -4113,7 +4113,7 @@ export default function App() {
                                   }
                                 }}
                                 className={cn(
-                                  "text-left px-2.5 py-1.5 rounded-md text-[11px] font-bold transition-colors border w-full truncate",
+                                  "text-left px-2.5 py-1.5 rounded-md text-[11px] font-bold transition-colors border w-full truncate shrink-0",
                                   isSelected
                                     ? "bg-modern-primary/10 border-modern-primary/20 text-modern-primary font-extrabold"
                                     : "bg-white border-modern-border text-modern-text hover:bg-slate-50"
