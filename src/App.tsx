@@ -1342,9 +1342,13 @@ export default function App() {
     setIsSavingWhatsapp(true);
     const id = (whatsappForm as any).id || Math.random().toString(36).substr(2, 9);
     const newAcc: WhatsAppAccount = {
-      ...whatsappForm,
-      id
-    } as WhatsAppAccount;
+      id,
+      name: whatsappForm.name || "",
+      origin: whatsappForm.origin || "",
+      color: whatsappForm.color || "#25D366",
+      phoneNumber: whatsappForm.phoneNumber || "",
+      identifier: whatsappForm.identifier || ""
+    };
 
     try {
       await setDoc(doc(db, `users/${effectiveWorkspaceId}/whatsappAccounts`, id), {
