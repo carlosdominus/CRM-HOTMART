@@ -757,6 +757,7 @@ export default function App() {
   const [clientExtraData, setClientExtraData] = useState<Record<string, { trackingCode?: string; assignedWhatsappId?: string; tag?: string; nome?: string; email?: string; telefone?: string }>>({});
   const [showWhatsappManager, setShowWhatsappManager] = useState(false);
   const [isSavingWhatsapp, setIsSavingWhatsapp] = useState(false);
+  const [whatsappError, setWhatsappError] = useState<string | null>(null);
   const [whatsappForm, setWhatsappForm] = useState({
     name: "",
     origin: "",
@@ -1316,7 +1317,20 @@ export default function App() {
 
   useEffect(() => {
     if (!authReady || !effectiveWorkspaceId) {
-      setWhatsappAccounts([]);
+      if (!user && authReady) {
+        const saved = localStorage.getItem('crm_whatsapp_accounts');
+        if (saved) {
+          try {
+            setWhatsappAccounts(JSON.parse(saved) as WhatsAppAccount[]);
+          } catch (e) {
+            setWhatsappAccounts([]);
+          }
+        } else {
+          setWhatsappAccounts([]);
+        }
+      } else {
+        setWhatsappAccounts([]);
+      }
       return;
     }
 
@@ -1329,13 +1343,13 @@ export default function App() {
     });
 
     return () => unsubscribe();
-  }, [authReady, effectiveWorkspaceId]);
+  }, [authReady, user, effectiveWorkspaceId]);
 
   const saveWhatsappAccount = async () => {
-    if (!user || !effectiveWorkspaceId) return;
+    setWhatsappError(null);
     
     if (!whatsappForm.name || !whatsappForm.identifier) {
-      alert("Por favor, preencha o Nome e o ID (Número p/ Ícone).");
+      setWhatsappError("Por favor, preencha o Nome e o ID (Número p/ Ícone).");
       return;
     }
 
@@ -1350,6 +1364,36 @@ export default function App() {
       identifier: whatsappForm.identifier || ""
     };
 
+    if (!user || !effectiveWorkspaceId) {
+      // Local Storage Mode
+      try {
+        const saved = localStorage.getItem('crm_whatsapp_accounts');
+        let parsed: any[] = saved ? JSON.parse(saved) : [];
+        const isEditing = parsed.some(acc => acc.id === id);
+        if (isEditing) {
+          parsed = parsed.map(acc => acc.id === id ? newAcc : acc);
+        } else {
+          parsed = [newAcc, ...parsed];
+        }
+        localStorage.setItem('crm_whatsapp_accounts', JSON.stringify(parsed));
+        setWhatsappAccounts(parsed);
+        setWhatsappForm({
+          name: "",
+          origin: "",
+          color: "#25D366",
+          phoneNumber: "",
+          identifier: ""
+        });
+      } catch (err) {
+        console.error(err);
+        setWhatsappError("Erro ao salvar conta localmente.");
+      } finally {
+        setIsSavingWhatsapp(false);
+      }
+      return;
+    }
+
+    // Online/Firebase Mode
     try {
       await setDoc(doc(db, `users/${effectiveWorkspaceId}/whatsappAccounts`, id), {
         ...newAcc,
@@ -1362,19 +1406,30 @@ export default function App() {
         phoneNumber: "",
         identifier: ""
       });
-      // Don't close immediately so user can see it's done if they have more to add? 
-      // Actually common pattern is to just keep it open or show success.
-      // Let's just reset the form and show the list.
     } catch (error) {
       handleFirestoreError(error, OperationType.WRITE, `users/${effectiveWorkspaceId}/whatsappAccounts/${id}`);
-      alert("Erro ao salvar conta. Verifique sua conexão.");
+      setWhatsappError("Erro ao salvar conta. Verifique sua conexão ou permissões.");
     } finally {
       setIsSavingWhatsapp(false);
     }
   };
 
   const deleteWhatsappAccount = async (id: string) => {
-    if (!user || !effectiveWorkspaceId) return;
+    if (!user || !effectiveWorkspaceId) {
+      const saved = localStorage.getItem('crm_whatsapp_accounts');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved) as WhatsAppAccount[];
+          const updated = parsed.filter(acc => acc.id !== id);
+          localStorage.setItem('crm_whatsapp_accounts', JSON.stringify(updated));
+          setWhatsappAccounts(updated);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      return;
+    }
+
     try {
       await deleteDoc(doc(db, `users/${effectiveWorkspaceId}/whatsappAccounts`, id));
     } catch (error) {
@@ -2444,8 +2499,8 @@ export default function App() {
         return tag === tf;
       });
       const matchesProduct = productFilter.length === 0 || productFilter.includes('all') || productFilter.some(pf => {
-        const hasLeadProduct = client.leads.some(l => l.produto && l.produto.trim() === pf);
-        const hasManualProduct = client.manualSales?.some(s => s.productName && s.productName.trim() === pf);
+        const hasLeadProduct = client.leads.some(l => l.produto && l.produto.trim().toLowerCase() === pf.toLowerCase());
+        const hasManualProduct = client.manualSales?.some(s => s.productName && s.productName.trim().toLowerCase() === pf.toLowerCase());
         return hasLeadProduct || hasManualProduct;
       });
 
@@ -2542,24 +2597,34 @@ export default function App() {
   }, [enrichedClients]);
 
   const uniqueProducts = useMemo(() => {
-    const products = new Set<string>();
+    const productsMap = new Map<string, string>();
     enrichedClients.forEach(c => {
       c.leads.forEach(l => {
         if (l.produto) {
           const trimmed = l.produto.trim();
-          if (trimmed) products.add(trimmed);
+          if (trimmed) {
+            const lower = trimmed.toLowerCase();
+            if (!productsMap.has(lower)) {
+              productsMap.set(lower, trimmed);
+            }
+          }
         }
       });
       if (c.manualSales) {
         c.manualSales.forEach(s => {
           if (s.productName) {
             const trimmed = s.productName.trim();
-            if (trimmed) products.add(trimmed);
+            if (trimmed) {
+              const lower = trimmed.toLowerCase();
+              if (!productsMap.has(lower)) {
+                productsMap.set(lower, trimmed);
+              }
+            }
           }
         });
       }
     });
-    return Array.from(products).sort();
+    return Array.from(productsMap.values()).sort();
   }, [enrichedClients]);
 
   const followupClients = useMemo(() => {
@@ -5497,6 +5562,11 @@ export default function App() {
                         className="w-full bg-slate-50 border border-modern-border px-3 py-2.5 text-xs font-bold text-modern-text focus:outline-none"
                       />
                     </div>
+                    {whatsappError && (
+                      <div className="text-[10px] bg-red-50 border border-red-100 text-red-700 px-3 py-2.5 font-bold uppercase">
+                        {whatsappError}
+                      </div>
+                    )}
                     <div className="flex flex-col gap-2 pt-2">
                       <button 
                         onClick={saveWhatsappAccount}
